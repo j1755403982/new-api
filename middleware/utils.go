@@ -1,55 +1,60 @@
 package middleware
 
 import (
-	"net/http"
-
-	"github.com/QuantumNous/new-api/common"
-	"github.com/QuantumNous/new-api/dto"
-	"github.com/QuantumNous/new-api/logger"
-	pluginruntime "github.com/QuantumNous/new-api/pkg/jsplugin"
-	"github.com/QuantumNous/new-api/relaykit/types"
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/songquanpeng/one-api/common"
+	"github.com/songquanpeng/one-api/common/helper"
+	"github.com/songquanpeng/one-api/common/logger"
+	"strings"
 )
 
-func abortWithOpenAiMessage(c *gin.Context, statusCode int, message string, code ...types.ErrorCode) {
-	codeStr := ""
-	if len(code) > 0 {
-		codeStr = string(code[0])
-	}
-	userId := c.GetInt("id")
-	_, preparedPluginRoute := c.Get(pluginruntime.ContextKeyRouteRequest)
-	if !preparedPluginRoute || !RespondTaskPluginError(c, &dto.TaskError{
-		Code:       codeStr,
-		Message:    message,
-		StatusCode: statusCode,
-	}) {
-		c.JSON(statusCode, gin.H{
-			"error": gin.H{
-				"message": common.MessageWithRequestId(message, c.GetString(common.RequestIdKey)),
-				"type":    "new_api_error",
-				"code":    codeStr,
-			},
-		})
-	}
-	c.Abort()
-	logger.LogError(c.Request.Context(), common.LogText("user %d | %s", userId, message))
-}
-
-// invalidRequestStatus is the status of a request whose body could not be
-// read or parsed: 413 when the body exceeds MAX_REQUEST_BODY_MB, else 400.
-func invalidRequestStatus(err error) int {
-	if common.IsRequestBodyTooLargeError(err) {
-		return http.StatusRequestEntityTooLarge
-	}
-	return http.StatusBadRequest
-}
-
-func abortWithMidjourneyMessage(c *gin.Context, statusCode int, code int, description string) {
+func abortWithMessage(c *gin.Context, statusCode int, message string) {
 	c.JSON(statusCode, gin.H{
-		"description": description,
-		"type":        "new_api_error",
-		"code":        code,
+		"error": gin.H{
+			"message": helper.MessageWithRequestId(message, c.GetString(helper.RequestIdKey)),
+			"type":    "one_api_error",
+		},
 	})
 	c.Abort()
-	logger.LogError(c.Request.Context(), description)
+	logger.Error(c.Request.Context(), message)
+}
+
+func getRequestModel(c *gin.Context) (string, error) {
+	var modelRequest ModelRequest
+	err := common.UnmarshalBodyReusable(c, &modelRequest)
+	if err != nil {
+		return "", fmt.Errorf("common.UnmarshalBodyReusable failed: %w", err)
+	}
+	if strings.HasPrefix(c.Request.URL.Path, "/v1/moderations") {
+		if modelRequest.Model == "" {
+			modelRequest.Model = "text-moderation-stable"
+		}
+	}
+	if strings.HasSuffix(c.Request.URL.Path, "embeddings") {
+		if modelRequest.Model == "" {
+			modelRequest.Model = c.Param("model")
+		}
+	}
+	if strings.HasPrefix(c.Request.URL.Path, "/v1/images/generations") {
+		if modelRequest.Model == "" {
+			modelRequest.Model = "dall-e-2"
+		}
+	}
+	if strings.HasPrefix(c.Request.URL.Path, "/v1/audio/transcriptions") || strings.HasPrefix(c.Request.URL.Path, "/v1/audio/translations") {
+		if modelRequest.Model == "" {
+			modelRequest.Model = "whisper-1"
+		}
+	}
+	return modelRequest.Model, nil
+}
+
+func isModelInList(modelName string, models string) bool {
+	modelList := strings.Split(models, ",")
+	for _, model := range modelList {
+		if modelName == model {
+			return true
+		}
+	}
+	return false
 }

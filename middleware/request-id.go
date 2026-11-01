@@ -1,19 +1,18 @@
 package middleware
 
 import (
-	"context"
-
-	"github.com/QuantumNous/new-api/common"
 	"github.com/gin-gonic/gin"
+
+	"github.com/songquanpeng/one-api/common/helper"
 )
 
 func RequestId() func(c *gin.Context) {
 	return func(c *gin.Context) {
-		id := common.NewRequestId()
-		c.Set(common.RequestIdKey, id)
-		ctx := context.WithValue(c.Request.Context(), common.RequestIdKey, id)
+		id := helper.GenRequestID()
+		c.Set(helper.RequestIdKey, id)
+		ctx := helper.SetRequestID(c.Request.Context(), id)
 		c.Request = c.Request.WithContext(ctx)
-		c.Header(common.RequestIdKey, id)
+		c.Header(helper.RequestIdKey, id)
 		c.Next()
 	}
 }

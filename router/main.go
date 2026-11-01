@@ -1,41 +1,31 @@
 package router
 
 import (
+	"embed"
 	"fmt"
+	"github.com/gin-gonic/gin"
+	"github.com/songquanpeng/one-api/common/config"
+	"github.com/songquanpeng/one-api/common/logger"
 	"net/http"
 	"os"
 	"strings"
-
-	"github.com/QuantumNous/new-api/common"
-	"github.com/QuantumNous/new-api/middleware"
-
-	"github.com/gin-gonic/gin"
 )
 
-func SetRouter(router *gin.Engine, assets WebAssets) {
+func SetRouter(router *gin.Engine, buildFS embed.FS) {
 	SetApiRouter(router)
 	SetDashboardRouter(router)
 	SetRelayRouter(router)
-	SetTaskPluginProtocolRouter(router)
-	SetVideoRouter(router)
-	SetTaskRouter(router)
-	pluginDispatcher := SetPluginRouter(router)
 	frontendBaseUrl := os.Getenv("FRONTEND_BASE_URL")
-	if common.IsMasterNode && frontendBaseUrl != "" {
+	if config.IsMasterNode && frontendBaseUrl != "" {
 		frontendBaseUrl = ""
-		common.SysLog(common.LogText("FRONTEND_BASE_URL is ignored on master node"))
+		logger.SysLog("FRONTEND_BASE_URL is ignored on master node")
 	}
 	if frontendBaseUrl == "" {
-		SetWebRouter(router, assets, pluginDispatcher)
+		SetWebRouter(router, buildFS)
 	} else {
 		frontendBaseUrl = strings.TrimSuffix(frontendBaseUrl, "/")
-		router.NoRoute(
-			pluginDispatcher,
-			middleware.RouteTag("web"),
-			middleware.AccessTokenAudit(),
-			func(c *gin.Context) {
-				c.Redirect(http.StatusMovedPermanently, fmt.Sprintf("%s%s", frontendBaseUrl, c.Request.RequestURI))
-			},
-		)
+		router.NoRoute(func(c *gin.Context) {
+			c.Redirect(http.StatusMovedPermanently, fmt.Sprintf("%s%s", frontendBaseUrl, c.Request.RequestURI))
+		})
 	}
 }
