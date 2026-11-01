@@ -1193,6 +1193,42 @@ body a:not(.oa-btn),
   margin: 0;
 }
 
+/* ---------- site footer ---------- */
+.ui.segment.vertical {
+  border-top: 1px solid var(--oa-line) !important;
+  margin-top: 28px;
+  padding: 18px 0 26px !important;
+}
+
+.custom-footer {
+  font-size: 12px;
+  line-height: 1.9;
+  color: var(--oa-text-3);
+}
+
+.custom-footer a {
+  color: var(--oa-accent-text);
+}
+
+.custom-footer .ft-contact {
+  font-size: 12.5px;
+  color: var(--oa-text-2);
+  margin-bottom: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 18px;
+}
+
+.custom-footer .ft-contact b {
+  color: var(--oa-text);
+  font-weight: 600;
+}
+
+.custom-footer .ft-note {
+  color: var(--oa-text-3);
+}
+
 @media (max-width: 1100px) {
   .oa-feature-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));

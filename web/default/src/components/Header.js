@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/User';
+import { StatusContext } from '../context/Status';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -87,8 +88,9 @@ const Header = () => {
   let navigate = useNavigate();
 
   const [showSidebar, setShowSidebar] = useState(false);
-  const systemName = getSystemName();
-  const logo = getLogo();
+  const [statusState] = useContext(StatusContext);
+  const systemName = statusState?.status?.system_name || getSystemName();
+  const logo = statusState?.status?.logo || getLogo();
 
   async function logout() {
     setShowSidebar(false);
