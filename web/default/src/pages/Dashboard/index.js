@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Card, Grid} from 'semantic-ui-react';
 import {
@@ -14,6 +14,8 @@ import {
   YAxis,
 } from 'recharts';
 import axios from 'axios';
+import {UserContext} from '../../context/User';
+import {renderQuota} from '../../helpers/render';
 import './Dashboard.css';
 
 // 在 Dashboard 组件内添加自定义配置
@@ -35,26 +37,28 @@ const chartConfig = {
     },
   },
   colors: {
-    requests: '#4318FF',
-    quota: '#00B5D8',
-    tokens: '#6C63FF',
+    requests: '#20634b',
+    quota: '#b08637',
+    tokens: '#4f8f6d',
   },
   barColors: [
-    '#4318FF', // 深紫色
-    '#00B5D8', // 青色
-    '#6C63FF', // 紫色
-    '#05CD99', // 绿色
-    '#FFB547', // 橙色
-    '#FF5E7D', // 粉色
-    '#41B883', // 翠绿
-    '#7983FF', // 淡紫
-    '#FF8F6B', // 珊瑚色
-    '#49BEFF', // 天蓝
+    '#20634b',
+    '#4f8f6d',
+    '#7fb79c',
+    '#b08637',
+    '#d9b85c',
+    '#8b948a',
+    '#2f7a5c',
+    '#a8c9b5',
+    '#c9a05a',
+    '#5a8f76',
   ],
 };
 
 const Dashboard = () => {
   const { t } = useTranslation();
+  const [userState] = useContext(UserContext);
+  const user = userState?.user || {};
   const [data, setData] = useState([]);
   const [summaryData, setSummaryData] = useState({
     todayRequests: 0,
@@ -224,7 +228,7 @@ const Dashboard = () => {
     tickLine: false,
     tick: {
       fontSize: 12,
-      fill: '#A3AED0',
+      fill: '#8b8f80',
       textAnchor: 'middle', // 文本居中对齐
     },
     tickFormatter: formatDate,
@@ -235,6 +239,44 @@ const Dashboard = () => {
 
   return (
     <div className='dashboard-container'>
+      <div className='oa-stat-grid oa-dash-stats'>
+        <div className='oa-stat-card'>
+          <span className='oa-stat-icon'>
+            <i className='wallet icon' />
+          </span>
+          <div>
+            <b>{renderQuota(user.quota || 0, t)}</b>
+            <span>剩余额度</span>
+          </div>
+        </div>
+        <div className='oa-stat-card'>
+          <span className='oa-stat-icon'>
+            <i className='chart pie icon' />
+          </span>
+          <div>
+            <b>{renderQuota(user.used_quota || 0, t)}</b>
+            <span>累计消耗</span>
+          </div>
+        </div>
+        <div className='oa-stat-card'>
+          <span className='oa-stat-icon'>
+            <i className='exchange icon' />
+          </span>
+          <div>
+            <b>{summaryData.todayRequests} 次</b>
+            <span>今日请求</span>
+          </div>
+        </div>
+        <div className='oa-stat-card'>
+          <span className='oa-stat-icon'>
+            <i className='bolt icon' />
+          </span>
+          <div>
+            <b>{(summaryData.todayTokens || 0).toLocaleString()}</b>
+            <span>今日 Tokens</span>
+          </div>
+        </div>
+      </div>
       {/* 三个并排的折线图 */}
       <Grid columns={3} stackable className='charts-grid'>
         <Grid.Column>

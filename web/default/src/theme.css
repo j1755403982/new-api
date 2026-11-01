@@ -1237,3 +1237,333 @@ body a:not(.oa-btn),
     grid-template-columns: 1fr;
   }
 }
+
+/* ===========================================================
+   Inner pages: shared components (tabs, tables, forms, modals)
+   =========================================================== */
+
+/* page shell */
+.ui.container.main-content > .ui.segment,
+.main-content > .ui.segment {
+  border-radius: var(--oa-r-l);
+  border: 1px solid var(--oa-line);
+  box-shadow: var(--oa-shadow-1);
+  padding: 22px 24px;
+}
+
+/* section headings inside pages */
+.ui.header,
+.ui.card > .content > .header {
+  font-weight: 600;
+  letter-spacing: 0.005em;
+}
+
+h1.ui.header {
+  font-size: 18px !important;
+}
+h2.ui.header {
+  font-size: 16px !important;
+}
+h3.ui.header {
+  font-size: 14.5px !important;
+}
+
+/* tabs */
+.ui.secondary.menu,
+.ui.pointing.menu,
+.ui.menu.secondary {
+  border-bottom: 1px solid var(--oa-line) !important;
+  margin-bottom: 18px !important;
+  gap: 4px;
+}
+
+.ui.secondary.menu .item,
+.ui.pointing.menu .item {
+  color: var(--oa-text-3) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  padding: 10px 14px !important;
+  border-radius: var(--oa-r) var(--oa-r) 0 0 !important;
+  border: none !important;
+}
+
+.ui.secondary.menu .item:hover,
+.ui.pointing.menu .item:hover {
+  color: var(--oa-accent-text) !important;
+  background: var(--oa-accent-soft) !important;
+}
+
+.ui.secondary.menu .item.active,
+.ui.pointing.menu .item.active,
+.ui.secondary.pointing.menu .item.active {
+  color: var(--oa-accent-text) !important;
+  background: transparent !important;
+  border-bottom: 2px solid var(--oa-accent) !important;
+  border-color: var(--oa-accent) !important;
+  font-weight: 650 !important;
+}
+
+/* tables */
+.ui.table {
+  font-size: 12.5px !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  overflow: hidden;
+}
+
+.ui.table thead th {
+  padding: 10px 12px !important;
+  background: var(--oa-surface-2) !important;
+  border-top: none !important;
+}
+
+.ui.table tbody td {
+  padding: 11px 12px !important;
+  vertical-align: middle !important;
+}
+
+.ui.table tbody tr:nth-child(even) {
+  background: #fbfaf7;
+}
+
+.ui.table tbody tr:hover {
+  background: var(--oa-accent-soft) !important;
+}
+
+.ui.table .ui.button {
+  padding: 6px 10px !important;
+  font-size: 12px !important;
+  border-radius: 6px !important;
+}
+
+.ui.table .ui.label {
+  font-size: 11px !important;
+  padding: 4px 9px !important;
+}
+
+/* pagination */
+.ui.pagination.menu {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.ui.pagination.menu .item {
+  border-radius: var(--oa-r-s) !important;
+  border: 1px solid transparent !important;
+  color: var(--oa-text-2) !important;
+  font-size: 12.5px !important;
+  min-width: 32px;
+}
+
+.ui.pagination.menu .item.active {
+  background: var(--oa-accent) !important;
+  color: #fff !important;
+  border-color: var(--oa-accent) !important;
+}
+
+/* forms */
+.ui.form .field {
+  margin-bottom: 14px;
+}
+
+.ui.form textarea {
+  min-height: 90px;
+  line-height: 1.7 !important;
+}
+
+.ui.form .inline.field > label,
+.ui.form .field > label {
+  font-weight: 500 !important;
+}
+
+.ui.form .help,
+.ui.form .field .help {
+  font-size: 11.5px !important;
+  color: var(--oa-text-3) !important;
+}
+
+/* messages / notices */
+.ui.message {
+  border-radius: var(--oa-r) !important;
+  background: var(--oa-surface-2) !important;
+  box-shadow: none !important;
+  border: 1px solid var(--oa-line) !important;
+  color: var(--oa-text-2) !important;
+  font-size: 12.5px !important;
+}
+
+.ui.positive.message {
+  background: var(--oa-accent-soft) !important;
+  border-color: var(--oa-accent-soft-2) !important;
+  color: var(--oa-accent-text) !important;
+}
+
+/* dropdowns */
+.ui.dropdown .menu {
+  border-radius: var(--oa-r) !important;
+  border: 1px solid var(--oa-line) !important;
+  box-shadow: var(--oa-shadow-2) !important;
+}
+
+.ui.dropdown .menu > .item {
+  font-size: 12.5px !important;
+}
+
+/* search input row */
+.ui.icon.input > input {
+  border-radius: var(--oa-r) !important;
+}
+
+/* labels & chips */
+.ui.label:not(.circular) {
+  padding: 4px 9px !important;
+  font-size: 11.5px !important;
+}
+
+/* statistics */
+.ui.statistic > .value {
+  font-weight: 600 !important;
+  color: var(--oa-text) !important;
+  letter-spacing: 0 !important;
+}
+
+.ui.statistic > .label {
+  font-size: 11.5px !important;
+  color: var(--oa-text-3) !important;
+}
+
+/* ===========================================================
+   Inner pages: page container & cards
+   =========================================================== */
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4px 0 40px;
+  background: transparent;
+}
+
+.dashboard-container > .ui.segment,
+.dashboard-container > .ui.segment.tab {
+  background: var(--oa-surface);
+  border: 1px solid var(--oa-line);
+  border-radius: var(--oa-r-l);
+  box-shadow: var(--oa-shadow-1);
+  padding: 22px 24px;
+  margin-bottom: 14px;
+}
+
+.dashboard-container .ui.header {
+  color: var(--oa-text) !important;
+}
+
+.dashboard-container h1.ui.header,
+.dashboard-container h2.ui.header {
+  font-size: 17px !important;
+  margin-bottom: 14px !important;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--oa-line);
+}
+
+.dashboard-container h3.ui.header {
+  font-size: 14px !important;
+  margin: 4px 0 12px !important;
+}
+
+.dashboard-container h4.ui.header {
+  font-size: 14px !important;
+  margin-bottom: 10px !important;
+}
+
+/* tabular tabs (settings page) */
+.ui.tabular.menu,
+.ui.menu.tabular {
+  border-bottom: 1px solid var(--oa-line) !important;
+  border: none;
+  box-shadow: none !important;
+  gap: 2px;
+}
+
+.ui.tabular.menu .item,
+.ui.menu.tabular .item {
+  border: none !important;
+  border-radius: var(--oa-r) var(--oa-r) 0 0 !important;
+  color: var(--oa-text-3) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  padding: 9px 14px !important;
+}
+
+.ui.tabular.menu .item.active,
+.ui.menu.tabular .item.active {
+  border: none !important;
+  border-bottom: 2px solid var(--oa-accent) !important;
+  color: var(--oa-accent-text) !important;
+  background: transparent !important;
+}
+
+/* dividers */
+.ui.divider {
+  border-top-color: var(--oa-line) !important;
+  border-bottom-color: var(--oa-line) !important;
+  margin: 18px 0 !important;
+}
+
+/* token page toolbar */
+.dashboard-container .ui.icon.input {
+  width: 100%;
+}
+
+/* make empty tables less stark */
+.ui.table tbody tr td:empty::after {
+  content: '';
+}
+
+/* ===========================================================
+   Page cards: one-api renders most inner pages as <Card chart-card>
+   =========================================================== */
+.dashboard-container .ui.card.chart-card {
+  background: var(--oa-surface) !important;
+  border: 1px solid var(--oa-line) !important;
+  border-radius: var(--oa-r-l) !important;
+  box-shadow: var(--oa-shadow-1) !important;
+  padding: 20px 22px 22px !important;
+  margin-bottom: 14px !important;
+}
+
+.dashboard-container .ui.card.chart-card > .content {
+  padding: 0 !important;
+}
+
+.dashboard-container .ui.card.chart-card > .content > .header,
+.dashboard-container .ui.card.chart-card > .content > .ui.header {
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  color: var(--oa-text) !important;
+  padding: 0 0 12px 0 !important;
+  margin: 0 0 14px 0 !important;
+  border-bottom: 1px solid var(--oa-line);
+}
+
+.dashboard-container .ui.card.chart-card .ui.form {
+  margin-bottom: 12px;
+}
+
+.dashboard-container .ui.card.chart-card .ui.message {
+  margin: 0 0 14px !important;
+}
+
+/* nested segments shouldn't render a second card */
+.dashboard-container .ui.segment .ui.segment {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* empty state text */
+.dashboard-container .ui.table .no-data,
+.dashboard-container .ui.table tbody tr td:only-child {
+  color: var(--oa-text-3);
+}
