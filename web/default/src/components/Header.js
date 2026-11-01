@@ -104,8 +104,17 @@ const Header = () => {
   };
 
   const renderButtons = (isMobile) => {
+    const guestHidden = [
+      'header.token',
+      'header.topup',
+      'header.dashboard',
+      'header.log',
+      'header.setting',
+      'header.chat',
+    ];
     return headerButtons.map((button) => {
       if (button.admin && !isAdmin()) return <></>;
+      if (!userState.user && guestHidden.includes(button.name)) return null;
       if (isMobile) {
         return (
           <Menu.Item
